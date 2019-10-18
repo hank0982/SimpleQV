@@ -1,0 +1,13 @@
+
+<div class="container sticky">
+    <div class="card">
+        <h5 class="card-header">Summary</h5>
+            <div class="card-body">
+                <h5 class="card-title">Used {{usedVotes}} out of {{totalVotes}} votes</h5>
+                <p class="card-text">
+                    <progressbar [animate]="false" [value]="dynamic" type="success"></progressbar>
+                </p>
+                <button type="button" class="btn btn-outline-primary">Submit</button>
+            </div>
+    </div>
+</div>
