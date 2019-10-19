@@ -13,8 +13,18 @@ import random
 
 @app.route('/')
 def root():
-    return app.send_static_file('index.html')
+    return jsonify({"string":"welcome"})
+	#return app.send_static_file('index.html')
 
+
+@app.route('/submit', methods=['POST'])
+def submit():
+	print(request.json)
+	insert_data = {
+		"form": "qv598"
+	}
+	db.test.insert_one(insert_data)
+	return jsonify({'ok': True}), 200
 
 @app.route('/qv/<string:file_name>')
 def show_subpath(file_name):
@@ -24,6 +34,3 @@ def show_subpath(file_name):
     data = json.load(open(filename))
     return jsonify(data)
 
-
-# if __name__ == '__main__':
-# 	app.run()

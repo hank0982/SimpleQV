@@ -4,7 +4,7 @@ import json
 import datetime
 from bson.objectid import ObjectId
 from flask import Flask
-from flask_pymongo import pymongo
+import pymongo
 from dotenv import load_dotenv
 from flask_cors import CORS
 
@@ -26,9 +26,9 @@ CORS(app)
 load_dotenv()
 
 if os.getenv("mongo_url"):
-    mongo_url = os.getenv("mongo_url")
-    client = pymongo.MongoClient(mongo_url)
-    db = client.test
+	mongo_url = os.getenv("mongo_url")
+	client = pymongo.MongoClient(mongo_url)
+	db = client.test
 else:
     print("Database located... looking for local mongodb")
     exit()
@@ -37,7 +37,6 @@ else:
 app.json_encoder = JSONEncoder
 
 from server import routes
-
 
 
 
