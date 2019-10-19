@@ -24,6 +24,7 @@ speed-measure-plugin*.json
 *.sublime-workspace
 
 # IDE - VSCode
+.vscode
 .vscode/*
 !.vscode/settings.json
 !.vscode/tasks.json
@@ -44,3 +45,8 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+.env
+
+# Python related
+.venv
+*__pycache__
