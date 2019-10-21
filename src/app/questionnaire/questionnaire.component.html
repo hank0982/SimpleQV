@@ -1,0 +1,19 @@
+<nav class="navbar navbar-light bg-light">
+    <div class="col-sm-1">
+        QV App
+    </div>
+    <div class="col-sm">
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(currentQuestion+1/numQuestion)*100"></div>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        [Info]
+    </div>
+</nav>
+<div class="container">
+    <h1>{{questionTitle}}</h1>
+    <p>{{questionDes}}</p>
+</div>
+<app-summary></app-summary>
+<app-option></app-option>

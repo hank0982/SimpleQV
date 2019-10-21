@@ -32,7 +32,7 @@ webpackEmptyAsyncContext.id = "./$$_lazy_route_resource lazy recursive";
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"navbar navbar-light bg-light\">\n          <div class=\"col-sm-1\">\n            QV App\n          </div>\n          <div class=\"col-sm\">\n              <progressbar style=\"height: 50%;\" max=\"4\" [value]=\"3\" [striped]=\"true\" [animate]=\"true\"><i>4 / 3</i></progressbar>\n          </div>\n          <div class=\"col-sm-1\">\n            [Info]\n          </div>\n</nav>\n\n<div class=\"container\">\n    <h1>Question Title</h1>\n    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.      </p>\n</div>\n\n<app-summary></app-summary>\n\n<app-option></app-option>\n\n<router-outlet></router-outlet>");
+/* harmony default export */ __webpack_exports__["default"] = ("\n<router-outlet></router-outlet>");
 
 /***/ }),
 
@@ -45,7 +45,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n    <ul class=\"list-group list-group-flush\">\n        <li class=\"list-group-item\" *ngFor=\"let option of options; let i = index\">\n            <div class=\"row\">\n                <div class=\"col-1\">\n                    <button (click)=\"modifyVotesByID(option.o_id, 1)\" type=\"button\" class=\"btn btn-outline-primary btn-sm\"><i class=\"fas fa-plus\"></i></button>\n                    <button (click)=\"modifyVotesByID(option.o_id, -1)\" type=\"button\" class=\"btn btn-outline-primary btn-sm\"><i class=\"fas fa-minus\"></i></button>\n                </div>\n                <div class=\"col-8\">\n                    {{option.option}}\n                    <div *ngIf=\"votes[option.o_id] > 0; then tick else cross\"></div>\n                    <ng-template #tick>\n                        <i *ngFor=\"let k of [].constructor(votes[option.o_id])\" class=\"far fa-check-circle\" ></i>\n                    </ng-template>\n                    <ng-template #cross>\n                        <i *ngFor=\"let k of [].constructor(-votes[option.o_id])\" class=\"far fa-times-circle\" ></i>\n                    </ng-template>\n                </div>\n                <div class=\"col-3\">            \n                    <progressbar style=\"width: 100%;\" max=\"4\" [value]=\"3\" [striped]=\"true\" [animate]=\"true\">\n                        <i>75%</i>\n                    </progressbar>\n                </div>\n            </div>\n            <div class=\"row\">\n                    <div class=\"col-1\"></div>\n                    <div class=\"col-8\">{{option.description}}</div>\n                    <div class=\"col-3\"> Voted {{votes[option.o_id]}} votes costs {{votes[option.o_id]*votes[option.o_id]}} credit</div>\n            </div>\n        </li>\n\n    </ul>\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n    <ul class=\"list-group list-group-flush\">\n        <li class=\"list-group-item\" *ngFor=\"let option of this.currentOptions; let i = index\">\n            <div class=\"row\">\n                <div class=\"col-1\">\n                    <div *ngIf=\"votes[i] >= 0 && calCurrentTotalCredits()+(votes[i]+1)*(votes[i]+1)-(votes[i]*votes[i]) > totalCredits;then disable else able\">\n                    </div> \n                    <ng-template #able>\n                        <button (click)=\"modifyVotesByID(i, 1)\" type=\"button\" class=\"btn btn-outline-primary btn-sm\">\n                                <i class=\"fas fa-plus\"></i>\n                        </button>                        \n                    </ng-template>\n                    <ng-template #disable>\n                        <button type=\"button\" class=\"btn btn-outline-primary btn-sm\" disabled>\n                                <i class=\"fas fa-plus\"></i>\n                        </button>                        \n                    </ng-template>\n                    <div *ngIf=\"votes[i] <= 0 && calCurrentTotalCredits()+(votes[i]-1)*(votes[i]-1)-(votes[i]*votes[i]) > totalCredits;then mdisable else mable\">\n                    </div> \n                    <ng-template #mable>\n                        <button (click)=\"modifyVotesByID(i, -1)\" type=\"button\" class=\"btn btn-outline-primary btn-sm\">\n                            <i class=\"fas fa-minus\"></i>\n                        </button>                      \n                    </ng-template>\n                    <ng-template #mdisable>\n                        <button type=\"button\" class=\"btn btn-outline-primary btn-sm\" disabled>\n                            <i class=\"fas fa-minus\"></i>\n                        </button>                      \n                    </ng-template>\n                    \n                </div>\n                <div class=\"col-8\">\n                    {{option.option}}\n                    <div *ngIf=\"votes[i] >= 0; then tick else cross\"></div>\n                    <ng-template #tick>\n                        <i *ngFor=\"let k of [].constructor(votes[i])\" class=\"far fa-check-circle tick\"></i>\n                    </ng-template>\n                    <ng-template #cross>\n                        <i *ngFor=\"let k of [].constructor(-votes[i])\" class=\"far fa-times-circle cross\"></i>\n                    </ng-template>\n                </div>\n                <div class=\"col-3\">            \n                    <progressbar style=\"width: 100%;\" [max]=\"this.totalCredits\" [value]=\"votes[i]*votes[i]\" [striped]=\"true\" [animate]=\"true\">\n                        <i>{{((votes[i]*votes[i])/this.totalCredits)*100}}%</i>\n                    </progressbar>\n                </div>\n            </div>\n            <div class=\"row\">\n                    <div class=\"col-1\"></div>\n                    <div class=\"col-8\">{{option.description}}</div>\n                    <div class=\"col-3\"> Voted {{votes[i]}} votes costs {{votes[i]*votes[i]}} credit</div>\n            </div>\n        </li>\n\n    </ul>\n</div>");
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/questionnaire/questionnaire.component.html":
+/*!**************************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/questionnaire/questionnaire.component.html ***!
+  \**************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"navbar navbar-light bg-light\">\n    <div class=\"col-sm-1\">\n        QV App\n    </div>\n    <div class=\"col-sm\">\n        <div class=\"progress\">\n            <div class=\"progress-bar progress-bar-striped progress-bar-animated\" [style.width.%]=\"(currentQuestion+1/numQuestion)*100\"></div>\n        </div>\n    </div>\n    <div class=\"col-sm-1\">\n        [Info]\n    </div>\n</nav>\n<div class=\"container\">\n    <h1>{{questionTitle}}</h1>\n    <p>{{questionDes}}</p>\n</div>\n<app-summary></app-summary>\n<app-option></app-option>");
 
 /***/ }),
 
@@ -58,7 +71,20 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("\n<div class=\"container sticky\">\n    <div class=\"card\">\n        <h5 class=\"card-header\">Summary</h5>\n            <div class=\"card-body\">\n                <h5 class=\"card-title\">Used {{usedVotes}} out of {{totalVotes}} votes</h5>\n                <p class=\"card-text\">\n                    <progressbar [animate]=\"false\" [value]=\"dynamic\" type=\"success\"></progressbar>\n                </p>\n                <button type=\"button\" class=\"btn btn-outline-primary\">Submit</button>\n            </div>\n    </div>\n</div>");
+/* harmony default export */ __webpack_exports__["default"] = ("\n<div class=\"container sticky\">\n    <div class=\"card\">\n        <h5 class=\"card-header\">Summary</h5>\n            <div class=\"card-body\">\n                <h5 class=\"card-title\">Used {{usedCredits}} out of {{totalCredits}} credits</h5>\n                <p class=\"card-text\">\n                    <progressbar [animate]=\"false\" [value]=\"percentage\" [type]=\"type\"></progressbar>\n                </p>\n                <button (click)=\"submit()\" type=\"button\" class=\"btn btn-outline-primary\">Submit</button>\n            </div>\n    </div>\n</div>");
+
+/***/ }),
+
+/***/ "./node_modules/raw-loader/dist/cjs.js!./src/app/welcome/welcome.component.html":
+/*!**************************************************************************************!*\
+  !*** ./node_modules/raw-loader/dist/cjs.js!./src/app/welcome/welcome.component.html ***!
+  \**************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("<nav class=\"navbar navbar-light bg-light\">\n    <div class=\"col-sm-1\">\n        QV App\n    </div>\n    <div class=\"col-sm\">\n    </div>\n    <div class=\"col-sm-1\">\n        [Info]\n    </div>\n</nav>\n<div class=\"container\">\n    <div class=\"container\">\n        <h1>Question Title</h1>\n        <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like). here are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.      </p>\n    </div>\n    <button  (click)=\"createUser()\" type=\"button\" class=\"btn btn-primary\">\n            Start Questionaire\n    </button>\n</div>\n");
 
 /***/ }),
 
@@ -304,10 +330,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./welcome/welcome.component */ "./src/app/welcome/welcome.component.ts");
+/* harmony import */ var _questionnaire_questionnaire_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./questionnaire/questionnaire.component */ "./src/app/questionnaire/questionnaire.component.ts");
 
 
 
-const routes = [];
+
+
+const routes = [
+    { path: '', component: _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_3__["WelcomeComponent"] },
+    { path: 'questionnaire', component: _questionnaire_questionnaire_component__WEBPACK_IMPORTED_MODULE_4__["QuestionnaireComponent"] }
+];
 let AppRoutingModule = class AppRoutingModule {
 };
 AppRoutingModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
@@ -384,6 +417,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ngx_bootstrap_progressbar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ngx-bootstrap/progressbar */ "./node_modules/ngx-bootstrap/progressbar/fesm2015/ngx-bootstrap-progressbar.js");
 /* harmony import */ var _summary_summary_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./summary/summary.component */ "./src/app/summary/summary.component.ts");
 /* harmony import */ var _option_option_component__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./option/option.component */ "./src/app/option/option.component.ts");
+/* harmony import */ var _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./welcome/welcome.component */ "./src/app/welcome/welcome.component.ts");
+/* harmony import */ var _questionnaire_questionnaire_component__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./questionnaire/questionnaire.component */ "./src/app/questionnaire/questionnaire.component.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+
+
+
+
 
 
 
@@ -400,15 +441,18 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         declarations: [
             _app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"],
             _summary_summary_component__WEBPACK_IMPORTED_MODULE_7__["SummaryComponent"],
-            _option_option_component__WEBPACK_IMPORTED_MODULE_8__["OptionComponent"]
+            _option_option_component__WEBPACK_IMPORTED_MODULE_8__["OptionComponent"],
+            _welcome_welcome_component__WEBPACK_IMPORTED_MODULE_9__["WelcomeComponent"],
+            _questionnaire_questionnaire_component__WEBPACK_IMPORTED_MODULE_10__["QuestionnaireComponent"]
         ],
         imports: [
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_1__["BrowserModule"],
+            _angular_common_http__WEBPACK_IMPORTED_MODULE_11__["HttpClientModule"],
             _app_routing_module__WEBPACK_IMPORTED_MODULE_3__["AppRoutingModule"],
             _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_5__["BrowserAnimationsModule"],
             ngx_bootstrap_progressbar__WEBPACK_IMPORTED_MODULE_6__["ProgressbarModule"].forRoot(),
         ],
-        providers: [],
+        providers: [ngx_cookie_service__WEBPACK_IMPORTED_MODULE_12__["CookieService"]],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
     })
 ], AppModule);
@@ -426,7 +470,7 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL29wdGlvbi9vcHRpb24uY29tcG9uZW50LnNjc3MifQ== */");
+/* harmony default export */ __webpack_exports__["default"] = (".tick {\n  color: green;\n}\n\n.cross {\n  color: red;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9tbnQvYy9Vc2Vycy91c2VyL0Rlc2t0b3AvV29ya3BsYWNlL3F2L3NyYy9hcHAvb3B0aW9uL29wdGlvbi5jb21wb25lbnQuc2NzcyIsInNyYy9hcHAvb3B0aW9uL29wdGlvbi5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNJLFlBQUE7QUNDSjs7QURDQTtFQUNJLFVBQUE7QUNFSiIsImZpbGUiOiJzcmMvYXBwL29wdGlvbi9vcHRpb24uY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIudGljayB7XHJcbiAgICBjb2xvcjogZ3JlZW47XHJcbn1cclxuLmNyb3NzIHtcclxuICAgIGNvbG9yOiByZWQ7XHJcbn0iLCIudGljayB7XG4gIGNvbG9yOiBncmVlbjtcbn1cblxuLmNyb3NzIHtcbiAgY29sb3I6IHJlZDtcbn0iXX0= */");
 
 /***/ }),
 
@@ -442,36 +486,47 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OptionComponent", function() { return OptionComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _services_global_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/global.service */ "./src/app/services/global.service.ts");
+
+
 
 
 let OptionComponent = class OptionComponent {
-    constructor() {
-        this.options = [
-            {
-                o_id: 0,
-                option: "Option 1",
-                description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as the",
-            },
-            {
-                o_id: 1,
-                option: "Option 2",
-                description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as the",
-            },
-            {
-                o_id: 2,
-                option: "Option 1",
-                description: "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as the",
-            },
-        ];
-        this.votes = new Array(this.options.length).fill(0);
+    constructor(gService, cookieService) {
+        this.gService = gService;
+        this.cookieService = cookieService;
     }
     ngOnInit() {
+        this.gService.questionSet.subscribe((data) => {
+            this.currentQuestionIndex = data.currentQuestion;
+            let currentQuestion = data.question_list[this.currentQuestionIndex];
+            this.currentOptions = currentQuestion.options;
+            this.votes = new Array(this.currentOptions.length).fill(0);
+            this.totalCredits = currentQuestion.totalCredits;
+            this.gService.votes.subscribe(votes => {
+                this.votes = votes[this.currentQuestionIndex];
+            });
+        });
+        let path = JSON.parse(this.cookieService.get('user_path'))[0];
+        this.gService.getQuestionnaire(path);
     }
-    modifyVotesByID(id, value) {
-        this.votes[id] = this.votes[id] + value;
-        console.log(this.votes);
+    calCurrentTotalCredits() {
+        let totalCredit = 0;
+        this.votes.forEach(vote => {
+            totalCredit = totalCredit + vote * vote;
+        });
+        return totalCredit;
+    }
+    modifyVotesByID(o_index, value) {
+        let originalVote = this.gService.votesContent[this.currentQuestionIndex][o_index];
+        this.gService.modifyVotesByID(this.currentQuestionIndex + 1, o_index + 1, originalVote + value);
     }
 };
+OptionComponent.ctorParameters = () => [
+    { type: _services_global_service__WEBPACK_IMPORTED_MODULE_3__["GlobalService"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
+];
 OptionComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-option',
@@ -479,6 +534,185 @@ OptionComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./option.component.scss */ "./src/app/option/option.component.scss")).default]
     })
 ], OptionComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/questionnaire/questionnaire.component.scss":
+/*!************************************************************!*\
+  !*** ./src/app/questionnaire/questionnaire.component.scss ***!
+  \************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3F1ZXN0aW9ubmFpcmUvcXVlc3Rpb25uYWlyZS5jb21wb25lbnQuc2NzcyJ9 */");
+
+/***/ }),
+
+/***/ "./src/app/questionnaire/questionnaire.component.ts":
+/*!**********************************************************!*\
+  !*** ./src/app/questionnaire/questionnaire.component.ts ***!
+  \**********************************************************/
+/*! exports provided: QuestionnaireComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "QuestionnaireComponent", function() { return QuestionnaireComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _services_global_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../services/global.service */ "./src/app/services/global.service.ts");
+
+
+
+
+let QuestionnaireComponent = class QuestionnaireComponent {
+    constructor(gService, cookieService) {
+        this.gService = gService;
+        this.cookieService = cookieService;
+        this.currentQuestion = 0;
+        this.numQuestion = 1;
+    }
+    ngOnInit() {
+        this.gService.questionSet.subscribe((data) => {
+            this.questionnaire = data;
+            this.currentQuestion = data.currentQuestion;
+            this.numQuestion = data.question_list.length;
+            let questionContent = data.question_list[this.currentQuestion];
+            this.questionDes = questionContent.description;
+            this.questionTitle = questionContent.question;
+        });
+        let path = JSON.parse(this.cookieService.get('user_path'))[0];
+        this.gService.getQuestionnaire(path);
+    }
+};
+QuestionnaireComponent.ctorParameters = () => [
+    { type: _services_global_service__WEBPACK_IMPORTED_MODULE_3__["GlobalService"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_2__["CookieService"] }
+];
+QuestionnaireComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-questionnaire',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./questionnaire.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/questionnaire/questionnaire.component.html")).default,
+        styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./questionnaire.component.scss */ "./src/app/questionnaire/questionnaire.component.scss")).default]
+    })
+], QuestionnaireComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/services/global.service.ts":
+/*!********************************************!*\
+  !*** ./src/app/services/global.service.ts ***!
+  \********************************************/
+/*! exports provided: GlobalService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "GlobalService", function() { return GlobalService; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+
+
+
+
+
+
+function calTotalCredits(votesArray) {
+    let q_totalUsedCredits = 0;
+    votesArray.forEach(vote => {
+        q_totalUsedCredits = q_totalUsedCredits + vote * vote;
+    });
+    return q_totalUsedCredits;
+}
+let GlobalService = class GlobalService {
+    constructor(http, cookieService) {
+        this.http = http;
+        this.cookieService = cookieService;
+        this.requestUrl = 'http://localhost:5000';
+        this.questionSet = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.votes = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+        this.usedCredits = new _angular_core__WEBPACK_IMPORTED_MODULE_1__["EventEmitter"]();
+    }
+    getUserID() {
+        return this.http.post(`${this.requestUrl}/createUser`, null)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
+    }
+    update() {
+        this.usedCredits.emit(this.usedCreditsArray);
+        this.votes.emit(this.votesContent);
+    }
+    modifyVotesByID(q_id, o_id, value) {
+        this.votesContent[q_id - 1][o_id - 1] = value;
+        this.usedCreditsArray[q_id - 1] = calTotalCredits(this.votesContent[q_id - 1]);
+        ;
+        this.update();
+    }
+    getQuestionnaire(path) {
+        const result = this.http.get(`${this.requestUrl}/qv/${path}`)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
+        let currentQuestion = this.cookieService.get('user_current_question_index');
+        result.subscribe((data) => {
+            let height = data.question_list.length;
+            let votesArray = [];
+            for (let i = 0; i < height; i++) {
+                votesArray.push(new Array(data.question_list[i].options.length).fill(0));
+            }
+            this.votesContent = votesArray;
+            this.usedCreditsArray = new Array(height).fill(0);
+            this.update();
+            this.questionSet.emit(Object.assign({ currentQuestion: Number(currentQuestion) }, data));
+            this.questionnaire = data;
+        });
+        return;
+    }
+    submit() {
+        let user_id = this.cookieService.get('user_id');
+        let currentQuestion = Number(this.cookieService.get('user_current_question_index')) + 1;
+        this.questionSet.emit(Object.assign({ currentQuestion: currentQuestion }, this.questionnaire));
+        this.update();
+        return this.http.post(`${this.requestUrl}/submit`, user_id);
+    }
+    handleError(error) {
+        if (error.error instanceof ErrorEvent) {
+            console.error('An error occurred:', error.error.message);
+        }
+        else {
+            console.error(`Backend returned code ${error.status}, ` +
+                `body was: ${error.error}`);
+        }
+        return Object(rxjs__WEBPACK_IMPORTED_MODULE_4__["throwError"])('Something bad happened; please try again later.');
+    }
+    ;
+};
+GlobalService.ctorParameters = () => [
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_5__["CookieService"] }
+];
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], GlobalService.prototype, "questionSet", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], GlobalService.prototype, "votes", void 0);
+tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Output"])()
+], GlobalService.prototype, "usedCredits", void 0);
+GlobalService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({
+        providedIn: 'root'
+    })
+], GlobalService);
 
 
 
@@ -509,17 +743,43 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SummaryComponent", function() { return SummaryComponent; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _services_global_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../services/global.service */ "./src/app/services/global.service.ts");
+
 
 
 let SummaryComponent = class SummaryComponent {
-    constructor() {
-        this.dynamic = 0;
-        this.usedVotes = 0;
-        this.totalVotes = 100;
+    constructor(gService) {
+        this.gService = gService;
+    }
+    submit() {
+        this.gService.submit();
     }
     ngOnInit() {
+        this.gService.questionSet.subscribe((data) => {
+            this.totalCredits = data.question_list[data.currentQuestion].totalCredits;
+            this.gService.usedCredits.subscribe(usedCredits => {
+                this.usedCredits = usedCredits[data.currentQuestion];
+                let percentage = (this.usedCredits / this.totalCredits) * 100;
+                if (percentage < 25) {
+                    this.type = 'success';
+                }
+                else if (percentage < 50) {
+                    this.type = 'info';
+                }
+                else if (percentage < 75) {
+                    this.type = 'warning';
+                }
+                else {
+                    this.type = 'danger';
+                }
+                this.percentage = percentage;
+            });
+        });
     }
 };
+SummaryComponent.ctorParameters = () => [
+    { type: _services_global_service__WEBPACK_IMPORTED_MODULE_2__["GlobalService"] }
+];
 SummaryComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
         selector: 'app-summary',
@@ -527,6 +787,82 @@ SummaryComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./summary.component.scss */ "./src/app/summary/summary.component.scss")).default]
     })
 ], SummaryComponent);
+
+
+
+/***/ }),
+
+/***/ "./src/app/welcome/welcome.component.scss":
+/*!************************************************!*\
+  !*** ./src/app/welcome/welcome.component.scss ***!
+  \************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ("\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvYXBwL3dlbGNvbWUvd2VsY29tZS5jb21wb25lbnQuc2NzcyJ9 */");
+
+/***/ }),
+
+/***/ "./src/app/welcome/welcome.component.ts":
+/*!**********************************************!*\
+  !*** ./src/app/welcome/welcome.component.ts ***!
+  \**********************************************/
+/*! exports provided: WelcomeComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "WelcomeComponent", function() { return WelcomeComponent; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ngx-cookie-service */ "./node_modules/ngx-cookie-service/ngx-cookie-service.js");
+/* harmony import */ var _services_global_service__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../services/global.service */ "./src/app/services/global.service.ts");
+
+
+
+
+
+let WelcomeComponent = class WelcomeComponent {
+    constructor(gService, router, cookieService) {
+        this.gService = gService;
+        this.router = router;
+        this.cookieService = cookieService;
+    }
+    ngOnInit() {
+    }
+    initCookie(user) {
+        this.cookieService.set('user_current_question_index', String(0));
+        this.cookieService.set('user_complete_flag', String(user.complete_flag));
+        this.cookieService.set('user_path', JSON.stringify(user.path));
+        this.cookieService.set('user_id', user.userid);
+    }
+    createUser() {
+        if (!this.cookieService.check('user_id')) {
+            this.gService.getUserID().subscribe((user) => {
+                this.initCookie(user);
+                this.router.navigate(['questionnaire']);
+            });
+        }
+        else {
+            this.router.navigate(['questionnaire']);
+        }
+    }
+};
+WelcomeComponent.ctorParameters = () => [
+    { type: _services_global_service__WEBPACK_IMPORTED_MODULE_4__["GlobalService"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] },
+    { type: ngx_cookie_service__WEBPACK_IMPORTED_MODULE_3__["CookieService"] }
+];
+WelcomeComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
+    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        selector: 'app-welcome',
+        template: tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! raw-loader!./welcome.component.html */ "./node_modules/raw-loader/dist/cjs.js!./src/app/welcome/welcome.component.html")).default,
+        styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./welcome.component.scss */ "./src/app/welcome/welcome.component.scss")).default]
+    })
+], WelcomeComponent);
 
 
 

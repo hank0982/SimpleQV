@@ -7,7 +7,7 @@ from pprint import pprint
 from sys import exit
 
 import requests
-from flask import Flask, abort, jsonify, request
+from flask import Flask, abort, jsonify, request, current_app
 from flask_cors import CORS
 from datetime import datetime
 from server import app, db
@@ -67,7 +67,7 @@ def show_subpath(file_name):
 	"""
 
 	file_name = '/'.join(['data', file_name])
-	filename = os.path.join(app.static_folder, file_name+'.json')
-	# data is a json file
-	data = json.load(open(filename))
-	return jsonify(data)
+	filename = file_name+'.json'
+
+	with current_app.open_resource(filename) as f:
+		return json.loads(f.read().decode('utf-8'))

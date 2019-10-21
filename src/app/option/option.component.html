@@ -1,31 +1,54 @@
 <div class="container">
     <ul class="list-group list-group-flush">
-        <li class="list-group-item" *ngFor="let option of options; let i = index">
+        <li class="list-group-item" *ngFor="let option of this.currentOptions; let i = index">
             <div class="row">
                 <div class="col-1">
-                    <button (click)="modifyVotesByID(option.o_id, 1)" type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-plus"></i></button>
-                    <button (click)="modifyVotesByID(option.o_id, -1)" type="button" class="btn btn-outline-primary btn-sm"><i class="fas fa-minus"></i></button>
+                    <div *ngIf="votes[i] >= 0 && calCurrentTotalCredits()+(votes[i]+1)*(votes[i]+1)-(votes[i]*votes[i]) > totalCredits;then disable else able">
+                    </div> 
+                    <ng-template #able>
+                        <button (click)="modifyVotesByID(i, 1)" type="button" class="btn btn-outline-primary btn-sm">
+                                <i class="fas fa-plus"></i>
+                        </button>                        
+                    </ng-template>
+                    <ng-template #disable>
+                        <button type="button" class="btn btn-outline-primary btn-sm" disabled>
+                                <i class="fas fa-plus"></i>
+                        </button>                        
+                    </ng-template>
+                    <div *ngIf="votes[i] <= 0 && calCurrentTotalCredits()+(votes[i]-1)*(votes[i]-1)-(votes[i]*votes[i]) > totalCredits;then mdisable else mable">
+                    </div> 
+                    <ng-template #mable>
+                        <button (click)="modifyVotesByID(i, -1)" type="button" class="btn btn-outline-primary btn-sm">
+                            <i class="fas fa-minus"></i>
+                        </button>                      
+                    </ng-template>
+                    <ng-template #mdisable>
+                        <button type="button" class="btn btn-outline-primary btn-sm" disabled>
+                            <i class="fas fa-minus"></i>
+                        </button>                      
+                    </ng-template>
+                    
                 </div>
                 <div class="col-8">
                     {{option.option}}
-                    <div *ngIf="votes[option.o_id] > 0; then tick else cross"></div>
+                    <div *ngIf="votes[i] >= 0; then tick else cross"></div>
                     <ng-template #tick>
-                        <i *ngFor="let k of [].constructor(votes[option.o_id])" class="far fa-check-circle" ></i>
+                        <i *ngFor="let k of [].constructor(votes[i])" class="far fa-check-circle tick"></i>
                     </ng-template>
                     <ng-template #cross>
-                        <i *ngFor="let k of [].constructor(-votes[option.o_id])" class="far fa-times-circle" ></i>
+                        <i *ngFor="let k of [].constructor(-votes[i])" class="far fa-times-circle cross"></i>
                     </ng-template>
                 </div>
                 <div class="col-3">            
-                    <progressbar style="width: 100%;" max="4" [value]="3" [striped]="true" [animate]="true">
-                        <i>75%</i>
+                    <progressbar style="width: 100%;" [max]="this.totalCredits" [value]="votes[i]*votes[i]" [striped]="true" [animate]="true">
+                        <i>{{((votes[i]*votes[i])/this.totalCredits)*100}}%</i>
                     </progressbar>
                 </div>
             </div>
             <div class="row">
                     <div class="col-1"></div>
                     <div class="col-8">{{option.description}}</div>
-                    <div class="col-3"> Voted {{votes[option.o_id]}} votes costs {{votes[option.o_id]*votes[option.o_id]}} credit</div>
+                    <div class="col-3"> Voted {{votes[i]}} votes costs {{votes[i]*votes[i]}} credit</div>
             </div>
         </li>
 

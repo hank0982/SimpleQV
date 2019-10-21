@@ -21,7 +21,7 @@ class JSONEncoder(json.JSONEncoder):
 
 
 # create the flask object
-app = Flask(__name__, static_folder="public", static_url_path='')
+app = Flask(__name__, template_folder="data", static_folder="public", static_url_path='')
 CORS(app)
 load_dotenv()
 
@@ -49,7 +49,7 @@ from server import routes
 
 # mongo = PyMongo(app)
 
-# load_dotenv()
+# load_dotenv()\
 
 # if os.getenv("Azure_endpoint"):
 #         endpoint = os.getenv("Azure_endpoint")
