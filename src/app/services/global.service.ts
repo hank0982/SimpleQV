@@ -10,7 +10,7 @@ import { submitPostSchema } from '../schema/submitPostSchema';
 function calTotalCredits(votesArray) {
   let q_totalUsedCredits = 0;
   votesArray.forEach(vote => {
-    q_totalUsedCredits = q_totalUsedCredits + vote*vote;
+    q_totalUsedCredits = q_totalUsedCredits + Math.pow(vote, 2);
   });
   return q_totalUsedCredits;
 }
@@ -86,28 +86,22 @@ export class GlobalService {
     return;
   }
   submit() {
-
-    
-    let user_id = this.getCookieById('user_id');
-    let currentQuestion = Number(this.getCookieById('user_current_question_index')) + 1;
-    let completeFlag = false;
+    let user_id: string = this.getCookieById('user_id');
+    let nextQuestionIndex: number = Number(this.getCookieById('user_current_question_index')) + 1;
     let submitData: submitPostSchema = this.generateSubmitPost(false);
-    if (currentQuestion >= this.questionnaire.question_list.length) {
-      currentQuestion = 0;
+    if (nextQuestionIndex >= this.questionnaire.question_list.length) {
+      nextQuestionIndex = 0;
       let pathIndex = Number(this.getCookieById('user_current_path_index'));
       let pathArray: Array<string> = JSON.parse(this.getCookieById('user_path'));
       this.cookieService.set('user_current_path_index', String(pathIndex+1));
       if (pathIndex+1 >= pathArray.length) {
-        console.log(pathIndex);
-        console.log(submitData);
-        completeFlag = true;
         this.cookieService.deleteAll();
         submitData.complete_flag = true;
         return this.http.post(`${this.requestUrl}/submit`, submitData);
       }
     }
-    this.cookieService.set('user_current_question_index', String(currentQuestion));
-    this.getQuestionnaire()
+    this.cookieService.set('user_current_question_index', String(nextQuestionIndex));
+    this.getQuestionnaire();
     submitData = this.generateSubmitPost(false);
     return this.http.post(`${this.requestUrl}/submit`, submitData);
   }

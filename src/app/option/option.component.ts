@@ -32,7 +32,6 @@ export class OptionComponent implements OnInit {
         this.votes = votes[this.currentQuestionIndex];
       })
     })
-    this.gService.getQuestionnaire();
   }
   calCurrentTotalCredits() {
     let totalCredit = 0;
@@ -40,6 +39,13 @@ export class OptionComponent implements OnInit {
       totalCredit = totalCredit + vote*vote;
     });
     return totalCredit;
+  }
+  isDisabled(index: number, isMinus: boolean) {
+    let currentDirection = isMinus ? this.votes[index] <= 0 : this.votes[index] >= 0;
+    let currentCredits = this.calCurrentTotalCredits();
+    let difference = Math.pow((Math.abs(this.votes[index])+1), 2) - Math.pow(this.votes[index], 2);
+    let isNextPossibleTotalCreditsOK = currentCredits + difference > this.totalCredits;
+    return currentDirection && isNextPossibleTotalCreditsOK;
   }
   modifyVotesByID(o_index, value){
     let originalVote = this.gService.votesContent[

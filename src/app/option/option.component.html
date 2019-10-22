@@ -3,31 +3,12 @@
         <li class="list-group-item" *ngFor="let option of this.currentOptions; let i = index">
             <div class="row">
                 <div class="col-1">
-                    <div *ngIf="votes[i] >= 0 && calCurrentTotalCredits()+(votes[i]+1)*(votes[i]+1)-(votes[i]*votes[i]) > totalCredits;then disable else able">
-                    </div> 
-                    <ng-template #able>
-                        <button (click)="modifyVotesByID(i, 1)" type="button" class="btn btn-outline-primary btn-sm">
-                                <i class="fas fa-plus"></i>
-                        </button>                        
-                    </ng-template>
-                    <ng-template #disable>
-                        <button type="button" class="btn btn-outline-primary btn-sm" disabled>
-                                <i class="fas fa-plus"></i>
-                        </button>                        
-                    </ng-template>
-                    <div *ngIf="votes[i] <= 0 && calCurrentTotalCredits()+(votes[i]-1)*(votes[i]-1)-(votes[i]*votes[i]) > totalCredits;then mdisable else mable">
-                    </div> 
-                    <ng-template #mable>
-                        <button (click)="modifyVotesByID(i, -1)" type="button" class="btn btn-outline-primary btn-sm">
-                            <i class="fas fa-minus"></i>
-                        </button>                      
-                    </ng-template>
-                    <ng-template #mdisable>
-                        <button type="button" class="btn btn-outline-primary btn-sm" disabled>
-                            <i class="fas fa-minus"></i>
-                        </button>                      
-                    </ng-template>
-                    
+                    <button (click)="modifyVotesByID(i, 1)" type="button" class="btn btn-outline-primary btn-sm" [disabled]="isDisabled(i, false)">
+                            <i class="fas fa-plus"></i>
+                    </button>                                 
+                    <button (click)="modifyVotesByID(i, -1)" type="button" class="btn btn-outline-primary btn-sm" [disabled]="isDisabled(i, true)">
+                        <i class="fas fa-minus"></i>
+                    </button>                                          
                 </div>
                 <div class="col-8">
                     {{option.option}}
