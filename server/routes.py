@@ -51,13 +51,8 @@ def submit():
 	"""
 
 	print(request.json)
-	insert_data = {
-		"user_id": "",
-		"file_name":"",
-		"qid":"",
-		"results":{}
-	}
-	db.test.insert_one(insert_data)
+	insert_data = request.json
+	db.data.insert_one(insert_data)
 	return jsonify({'ok': True}), 200
 
 
