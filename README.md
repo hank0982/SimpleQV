@@ -38,9 +38,30 @@ ng build && flask run
 ```
 
 ## Features
-
+- Supports naive QV
+- Supports multiple questions
+- Supports rendering different set of questions through URL
 
 ## Customizing application
+- You can customize the questions by editing json file: `server/data/example.json`. The schema should be the following:
+```
+{
+  "setting":{
+    "style":"binary"
+  },
+  "question_list":[
+    {
+      "qid":1,
+      "question":"This is an example question number 1",
+      "description":"This is the description place holder for Question 1",
+      "options":[
+        {
+          "o_id":1,
+          "option":"Option1",
+          "description":"Description for option1"
+        }, ...
+```
+- To add multiple QV files, place multiple json files usner `server/data/`. For example, if your filename is `newquestion.json`. The QV would be accessable with the URL: `/qv/newquestion`. For it to be routed, you need to change the array in the file `utils.py` under ther `server` folder.
 
 
 ## Further help
