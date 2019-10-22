@@ -6,4 +6,4 @@ def decide_path():
 	# possible ways of implementing includes using another db to store the JSON
 	# MDB returns the least used json files.
 
-	return ["example"]
+	return ["example", "example"]

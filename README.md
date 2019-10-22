@@ -61,7 +61,7 @@ ng build && flask run
           "description":"Description for option1"
         }, ...
 ```
-- To add multiple QV files, place multiple json files usner `server/data/`. For example, if your filename is `newquestion.json`. The QV would be accessable with the URL: `/qv/newquestion`. For it to be routed, you need to change the array in the file `utils.py` under ther `server` folder.
+- To add multiple QV files, place multiple json files usner `server/data/`. For it to be routed, you need to change the array in the file `utils.py` under ther `server` folder.
 
 
 ## Further help
