@@ -28,7 +28,7 @@ load_dotenv()
 if os.getenv("mongo_url"):
 	mongo_url = os.getenv("mongo_url")
 	client = pymongo.MongoClient(mongo_url)
-	db = client.test
+	db = client.results
 else:
     print("Database located... looking for local mongodb")
     exit()
@@ -37,32 +37,3 @@ else:
 app.json_encoder = JSONEncoder
 
 from server import routes
-
-
-
-# if not os.environ.get("DB"):
-# 	config = ConfigParser()
-# 	config.read('setting.ini')
-# 	app.config['MONGO_URI'] = config['DEFAULT']['DB']
-# else:
-# 	app.config['MONGO_URI'] = os.environ.get("DB")
-
-# mongo = PyMongo(app)
-
-# load_dotenv()\
-
-# if os.getenv("Azure_endpoint"):
-#         endpoint = os.getenv("Azure_endpoint")
-#         key = os.getenv("Azure_key")
-# else:
-#     print("no search config avaliable")
-#     exit()
-
-# utils function
-# def get_bing_result(query, count):
-# 	headers = {"Ocp-Apim-Subscription-Key": key}
-# 	params = {"q": query, "textDecorations": True, "textFormat": "HTML", "responseFilter":"Webpages", "count": count}
-# 	response = requests.get(endpoint, headers=headers, params=params)
-# 	response.raise_for_status()
-# 	search_results = response.json()
-# 	return search_results
