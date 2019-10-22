@@ -22,7 +22,6 @@ export class OptionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    
     this.gService.questionSet.subscribe((data: Questionnaire)=>{
       this.currentQuestionIndex = data.currentQuestion;
       let currentQuestion = data.question_list[this.currentQuestionIndex];
@@ -33,8 +32,7 @@ export class OptionComponent implements OnInit {
         this.votes = votes[this.currentQuestionIndex];
       })
     })
-    let path = JSON.parse(this.cookieService.get('user_path'))[0];
-    this.gService.getQuestionnaire(path);
+    this.gService.getQuestionnaire();
   }
   calCurrentTotalCredits() {
     let totalCredit = 0;

@@ -4,4 +4,5 @@ export interface Question {
     options: Array<Option>,
     totalCredits: number,
     question: string,
+    qid: number,
 }

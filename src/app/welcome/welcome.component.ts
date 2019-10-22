@@ -24,6 +24,7 @@ export class WelcomeComponent implements OnInit {
     this.cookieService.set('user_complete_flag', String(user.complete_flag));
     this.cookieService.set('user_path', JSON.stringify(user.path));
     this.cookieService.set('user_id', user.userid);
+    this.cookieService.set('user_current_path_index', String(0));
   }
   createUser() {
     if(!this.cookieService.check('user_id')){

@@ -29,9 +29,9 @@ export class QuestionnaireComponent implements OnInit {
       let questionContent = data.question_list[this.currentQuestion];
       this.questionDes = questionContent.description;
       this.questionTitle = questionContent.question;
+      console.log(questionContent);
     })
-    let path = JSON.parse(this.cookieService.get('user_path'))[0];
-    this.gService.getQuestionnaire(path);
+    this.gService.getQuestionnaire();
   }
 
 }
