@@ -97,13 +97,21 @@ export class GlobalService {
       if (pathIndex+1 >= pathArray.length) {
         this.cookieService.deleteAll();
         submitData.complete_flag = true;
-        return this.http.post(`${this.requestUrl}/submit`, submitData);
+        return this.http.post(`${this.requestUrl}/submit`, submitData).pipe(
+          catchError(this.handleError)
+        ).subscribe(data => {
+          console.log(data)
+        });
       }
     }
     this.cookieService.set('user_current_question_index', String(nextQuestionIndex));
     this.getQuestionnaire();
     submitData = this.generateSubmitPost(false);
-    return this.http.post(`${this.requestUrl}/submit`, submitData);
+    return this.http.post(`${this.requestUrl}/submit`, submitData).pipe(
+      catchError(this.handleError)
+    ).subscribe(data => {
+      console.log(data)
+    });
   }
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {

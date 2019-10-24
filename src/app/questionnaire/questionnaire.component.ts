@@ -15,6 +15,8 @@ export class QuestionnaireComponent implements OnInit {
   numQuestion: number = 1;
   questionTitle: string;
   questionDes: string;
+  numFile: number = 1;
+  currentFile: number = 1;
   constructor(
     private gService: GlobalService, 
     private cookieService: CookieService
@@ -29,8 +31,12 @@ export class QuestionnaireComponent implements OnInit {
       let questionContent = data.question_list[this.currentQuestion];
       this.questionDes = questionContent.description;
       this.questionTitle = questionContent.question;
-      console.log(questionContent);
+      let pathArray: Array<string> = JSON.parse(this.cookieService.get('user_path'));
+      this.numFile = pathArray.length;
+      let pathIndex = Number(this.cookieService.get('user_current_path_index'));
+      this.currentFile = pathIndex + 1;
     })
+    
     this.gService.getQuestionnaire();
   }
 

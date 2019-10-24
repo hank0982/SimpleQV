@@ -1,5 +1,5 @@
 <nav class="navbar navbar-light bg-light">
-    <div class="col-sm-1">
+    <div class="col-sm-2">
         QV App
     </div>
     <div class="col-sm">
@@ -7,8 +7,8 @@
             <div class="progress-bar progress-bar-striped progress-bar-animated" [style.width.%]="(currentQuestion+1/numQuestion)*100"></div>
         </div>
     </div>
-    <div class="col-sm-1">
-        [Info]
+    <div class="col-sm-2" align="right">
+        Part {{currentFile}} Q{{currentQuestion+1}} / {{numFile}} Parts
     </div>
 </nav>
 <div class="container">
