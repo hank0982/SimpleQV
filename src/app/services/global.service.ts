@@ -1,11 +1,12 @@
 import { Injectable, EventEmitter, Output} from '@angular/core';
 import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { User } from '../schema/user';
-import { catchError, retry } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 import { Questionnaire } from '../schema/questionnaire';
 import { CookieService } from 'ngx-cookie-service';
 import { submitPostSchema } from '../schema/submitPostSchema';
+import { Router } from '@angular/router';
 
 function calTotalCredits(votesArray) {
   let q_totalUsedCredits = 0;
@@ -30,7 +31,11 @@ export class GlobalService {
   votesContent: Array<Array<number>>;
   usedCreditsArray: Array<number>;
   questionnaire: Questionnaire;
-  constructor(private http: HttpClient, private cookieService: CookieService) { }
+  constructor(
+    private http: HttpClient, 
+    private cookieService: CookieService,
+    private router: Router,
+  ) { }
   getUserID() {
     return this.http.post<User>(`${this.requestUrl}/createUser`, null)
     .pipe(
@@ -86,7 +91,6 @@ export class GlobalService {
     return;
   }
   submit() {
-    let user_id: string = this.getCookieById('user_id');
     let nextQuestionIndex: number = Number(this.getCookieById('user_current_question_index')) + 1;
     let submitData: submitPostSchema = this.generateSubmitPost(false);
     if (nextQuestionIndex >= this.questionnaire.question_list.length) {
@@ -101,6 +105,7 @@ export class GlobalService {
           catchError(this.handleError)
         ).subscribe(data => {
           console.log(data)
+          this.router.navigate(['end']);
         });
       }
     }

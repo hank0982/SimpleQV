@@ -11,6 +11,7 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { EndPageComponent } from './end-page/end-page.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { CookieService } from 'ngx-cookie-service';
     SummaryComponent,
     OptionComponent,
     WelcomeComponent,
-    QuestionnaireComponent
+    QuestionnaireComponent,
+    EndPageComponent
   ],
   imports: [
     BrowserModule,
